@@ -158,6 +158,17 @@ button:active {
   font-size: 80%;
 }
 
+.chat-messages .message .message-text ol,
+.chat-messages .message .message-text ul {
+  padding-inline-start: 10px;
+}
+
+.chat-messages .message .message-text blockquote {
+  border-left: 2px solid #ccc;
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
+}
+
 .chat-messages .message.message-to {
   background-color: var(--main-color);
   color: #FFF;

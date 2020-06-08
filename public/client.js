@@ -1,5 +1,6 @@
 // @ts-nocheck
 let ws;
+let editor;
 let chatUsersCtr = document.querySelector("#chatUsers");
 let chatUsersCount = document.querySelector("#chatUsersCount");
 let sendMessageForm = document.querySelector("#messageSendForm");
@@ -16,19 +17,55 @@ window.addEventListener("DOMContentLoaded", () => {
 
 sendMessageForm.onsubmit = (ev) => {
   ev.preventDefault();
-  if (!messageInput.value){
-    return;
-  }
-  const event = {
-    event: "message",
-    data: messageInput.value,
-  };
-  ws.send(JSON.stringify(event));
-  messageInput.value = "";
+  submit();
 };
 
 leaveGroupBtn.onclick = () => {
   window.location.href = 'chat.html';
+};
+
+function submit() {
+  if (!editor) {
+    return;
+  }
+  const content = editor.getContent();
+  if (!content) {
+    return;
+  }
+  const event = {
+    event: "message",
+    data: content
+  };
+  ws.send(JSON.stringify(event));
+  editor.resetContent();
+}
+
+function initTinyMCE() {
+  tinymce.init({
+    selector: '#messageInput',
+    plugins: 'autoresize link lists',
+    toolbar: 'undo redo | bold italic underline strikethrough | forecolor | numlist bullist | link blockquote',
+    menubar: false,
+    statusbar: false,
+    width: '100%',
+    toolbar_location: 'bottom',
+    autoresize_bottom_margin: 0,
+    contextmenu: false,
+    setup: (ed) => {
+      editor = ed;
+      ed.on('keydown', (e) => {
+        // Submit if pressing enter in a paragraph with a collapsed selection
+        if (e.keyCode === 13 && e.shiftKey !== true && ed.selection.isCollapsed()) {
+          const block = ed.dom.getParent(ed.selection.getStart(), ed.dom.isBlock);
+          if (block.nodeName === 'P' && block.parentNode === editor.getBody()) {
+            submit();
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }
+      });
+    }
+  });
 }
 
 function onConnectionOpen() {
@@ -66,7 +103,7 @@ function onMessageReceived(event) {
       const el = chatMessagesCtr;
       const scrollToBottom = Math.floor(el.offsetHeight + el.scrollTop) === el.scrollHeight
       appendMessage(event.data);
-      
+
       if (scrollToBottom) {
 
         el.scrollTop = 10000000;
@@ -85,7 +122,7 @@ function appendMessage(message) {
   }`;
   messageEl.innerHTML = `
         ${message.sender === "me" ? "" : `<h4>${message.name}</h4>`}
-        <p class="message-text">${message.message}</p>
+        <div class="message-text">${message.message}</div>
       `;
   chatMessagesCtr.appendChild(messageEl);
 }
@@ -101,3 +138,5 @@ function getQueryParams() {
 
   return params;
 }
+
+initTinyMCE();
