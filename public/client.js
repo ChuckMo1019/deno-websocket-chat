@@ -43,8 +43,8 @@ function submit() {
 function initTinyMCE() {
   tinymce.init({
     selector: '#messageInput',
-    plugins: 'autoresize link lists',
-    toolbar: 'undo redo | bold italic underline strikethrough | forecolor | numlist bullist | link blockquote',
+    plugins: 'autoresize link lists emoticons',
+    toolbar: 'bold italic underline strikethrough | forecolor | numlist bullist | link blockquote emoticons',
     menubar: false,
     statusbar: false,
     width: '100%',
@@ -53,17 +53,6 @@ function initTinyMCE() {
     contextmenu: false,
     setup: (ed) => {
       editor = ed;
-      ed.on('keydown', (e) => {
-        // Submit if pressing enter in a paragraph with a collapsed selection
-        if (e.keyCode === 13 && e.shiftKey !== true && ed.selection.isCollapsed()) {
-          const block = ed.dom.getParent(ed.selection.getStart(), ed.dom.isBlock);
-          if (block.nodeName === 'P' && block.parentNode === editor.getBody()) {
-            submit();
-            e.preventDefault();
-            e.stopImmediatePropagation();
-          }
-        }
-      });
     }
   });
 }
