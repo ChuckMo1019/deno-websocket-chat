@@ -10,5 +10,7 @@ You need to have [Deno installed](https://deno.land/#installation) in order to r
 1. Clone this repository (e.g., `git clone https://github.com/benlongdev/deno-websocket-chat.git`)
 2. From within the project's root directory, run `deno run --allow-net server.ts`
 3. Open `public/index.html` in your browser
-4. Join a chat room and start typing
-5. To demo two participants, open `public/index.html` in another window and join the same chat room
+4. Enter your name, select a group to join, and click **Login**
+5. To demo two or more participants, open `public/index.html` in another window and join the same group
+
+![Deno chat app with WYSIWYG HTML editor](https://www.tiny.cloud/storage/blog/deno-chat-app/github-readme-image.png)
