@@ -13,4 +13,4 @@ You need to have [Deno installed](https://deno.land/#installation) in order to r
 4. Enter your name, select a group to join, and click **Login**
 5. To demo two or more participants, open `public/index.html` in another window and join the same group
 
-![Deno chat app with WYSIWYG HTML editor](https://www.tiny.cloud/storage/blog/deno-chat-app/github-readme-image-900.png)
+![Deno chat app with WYSIWYG HTML editor](https://www.tiny.cloud/storage/blog/deno-chat-app/github-readme-image-small.png)
